@@ -1,0 +1,44 @@
+{
+  "burgundy-floral": {
+    "background": "assets/backgrounds/burgundy-floral.webp",
+    "colors": {
+      "primary": "#6B1D2A",
+      "accent": "#B08A3E",
+      "background": "#F8F3EA",
+      "text": "#4A1A20",
+      "muted": "#76585A"
+    },
+    "hero": {
+      "backgroundPosition": "center center",
+      "backgroundSize": "cover",
+      "namePosition": {
+        "top": "43%",
+        "left": "50%",
+        "width": "62%",
+        "textAlign": "center",
+        "fontSize": "clamp(2.8rem, 9vw, 6.2rem)"
+      }
+    }
+  },
+  "emerald-gold": {
+    "background": "assets/backgrounds/hero-background.webp",
+    "colors": {
+      "primary": "#10251D",
+      "accent": "#C39A55",
+      "background": "#07130F",
+      "text": "#F1EADB",
+      "muted": "#D6CCB8"
+    },
+    "hero": {
+      "backgroundPosition": "center center",
+      "backgroundSize": "cover",
+      "namePosition": {
+        "top": "50%",
+        "left": "50%",
+        "width": "82%",
+        "textAlign": "center",
+        "fontSize": "clamp(4.7rem, 14vw, 10rem)"
+      }
+    }
+  }
+}

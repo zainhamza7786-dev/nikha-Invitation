@@ -1,7 +1,22 @@
 export async function loadConfig() {
-    const response = await fetch('config/wedding.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error(`Could not load wedding config: ${response.status}`);
-    return response.json();
+    const [weddingResponse, designsResponse] = await Promise.all([
+        fetch('config/wedding.json', { cache: 'no-store' }),
+        fetch('config/designs.json', { cache: 'no-store' })
+    ]);
+    if (!weddingResponse.ok) throw new Error(`Could not load wedding config: ${weddingResponse.status}`);
+    if (!designsResponse.ok) throw new Error(`Could not load design registry: ${designsResponse.status}`);
+    const wedding = await weddingResponse.json();
+    const designs = await designsResponse.json();
+    const designName = wedding.design || wedding.theme || 'emerald-gold';
+    const design = designs[designName] || {
+        ...designs.emerald-gold,
+        ...(wedding.background ? { background: wedding.background } : {})
+    };
+    const resolved = { ...wedding, design: designName, designConfig: design };
+    if (!designs[designName]) {
+        resolved.designWarning = `Missing design "${designName}". Using emerald-gold instead.`;
+    }
+    return resolved;
 }
 
 export function getNames(config) {

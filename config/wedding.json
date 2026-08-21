@@ -7,8 +7,9 @@
   "venue": "Venue Name",
   "address": "Venue Address",
   "googleMapsUrl": "",
-  "whatsappNumber": "",
+  "whatsappNumber": "+919",
   "music": "assets/music/NikhaSong.mp3",
+  "design": "burgundy-floral",
   "theme": "emerald-gold",
   "background": "assets/backgrounds/hero-background.webp",
   "gallery": [

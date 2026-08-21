@@ -24,6 +24,8 @@ public/                    Static public files
 
 Customer data is never embedded in the design components. The app fetches JSON at runtime, formats the configured date and timezone, builds the gallery, connects WhatsApp RSVP, and enables music after the visitor opens the invitation.
 
+Designs are registered in `config/designs.json`. Add a local Canva-exported background under `assets/backgrounds/`, add its design entry with colors and hero positioning, then set `design` in `config/wedding.json`. The names remain live HTML text over the artwork. If the selected design or artwork is missing, the app falls back where possible and logs the exact missing path in the browser console.
+
 ## Local check
 
 Run `npm run check` to validate the JavaScript modules. To preview the page locally, serve the repository over HTTP because ES modules and `fetch()` are blocked from `file://` pages:

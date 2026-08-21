@@ -16,7 +16,10 @@ const app = document.querySelector('#app');
 
 loadConfig().then((config) => {
     document.title = `${getNames(config)} | Nikah Invitation`;
-    document.body.dataset.theme = config.theme;
+    document.body.dataset.theme = config.theme || config.design;
+    document.body.dataset.design = config.design;
+    applyDesignVariables(config);
+    reportMissingAssets(config);
     app.innerHTML = `${renderOpening(config)}<audio id="wedding-music" loop></audio><button class="music-toggle" data-music-toggle aria-label="Play music">Play music</button><main>${renderHero(config)}${renderInvitation(config)}<section class="countdown-section" data-reveal><div class="section-wrap"><p class="eyebrow">Counting the moments</p><h2>Until our Nikah</h2><div class="gold-rule"></div><div class="countdown" data-countdown-root><div><strong data-countdown="days">00</strong><span>Days</span></div><div><strong data-countdown="hours">00</strong><span>Hours</span></div><div><strong data-countdown="minutes">00</strong><span>Minutes</span></div><div><strong data-countdown="seconds">00</strong><span>Seconds</span></div></div></div></section>${renderEvents(config)}<section class="gallery-section" data-reveal><div class="section-wrap"><p class="eyebrow">Our moments</p><h2>A few memories</h2><div class="gold-rule"></div><div class="gallery">${renderGallery(config.gallery)}</div></div></section>${renderDua()}${renderRsvp(config)}</main>${renderFooter(config)}`;
     const opening = document.querySelector('#opening');
     document.querySelector('[data-open]').addEventListener('click', () => {
@@ -34,3 +37,37 @@ loadConfig().then((config) => {
 }).catch((error) => {
     app.innerHTML = `<main class="error-state"><h1>Invitation unavailable</h1><p>${error.message}</p></main>`;
 });
+
+function applyDesignVariables(config) {
+    const root = document.documentElement;
+    const colors = config.designConfig.colors || {};
+    const position = config.designConfig.hero?.namePosition || {};
+    const hero = config.designConfig.hero || {};
+    const variables = {
+        '--color-primary': colors.primary,
+        '--color-accent': colors.accent,
+        '--color-background': colors.background,
+        '--color-text': colors.text,
+        '--color-muted': colors.muted,
+        '--hero-name-top': position.top,
+        '--hero-name-left': position.left,
+        '--hero-name-width': position.width,
+        '--hero-name-align': position.textAlign,
+        '--hero-name-size': position.fontSize,
+        '--hero-background-position': hero.backgroundPosition,
+        '--hero-background-size': hero.backgroundSize
+    };
+    Object.entries(variables).forEach(([name, value]) => {
+        if (value) root.style.setProperty(name, value);
+    });
+}
+
+function reportMissingAssets(config) {
+    const paths = [config.designConfig.background, config.music, ...(config.gallery || []).map((item) => typeof item === 'string' ? item : item.src)];
+    paths.filter(Boolean).forEach((path) => {
+        fetch(path, { method: 'HEAD' }).then((response) => {
+            if (!response.ok) console.warn(`Missing asset: ${path}`);
+        }).catch(() => console.warn(`Missing asset: ${path}`));
+    });
+    if (config.designWarning) console.warn(config.designWarning);
+}
