@@ -1,0 +1,20 @@
+@media (max-width: 700px) {
+    section { padding: 86px 0; }
+    .section-wrap { width: min(100% - 32px, 520px); }
+    .hero-copy .arabic { font-size: 1.25rem; }
+    .hero-script { font-size: clamp(4.3rem, 19vw, 7rem); }
+    .hero-date { font-size: 1rem; }
+    .scroll-cue { margin-top: 48px; }
+    .invitation-card { width: calc(100% - 32px); padding: 52px 20px; }
+    .invitation-copy { font-size: 1.4rem; }
+    .invitation-copy strong { font-size: 1.85rem; }
+    .countdown { grid-template-columns: repeat(2, 1fr); }
+    .countdown div:nth-child(2) { border-right: 0; }
+    .countdown div:nth-child(-n + 2) { border-bottom: 1px solid var(--line); }
+    .event-grid { grid-template-columns: 1fr; }
+    .event-grid article { min-height: auto; padding: 26px; }
+    .event-grid h3 { margin-top: 20px; }
+    .gallery { grid-template-columns: 1fr; }
+    .gallery-card { aspect-ratio: 4 / 5; }
+    .music-toggle { right: 14px; bottom: 14px; }
+}

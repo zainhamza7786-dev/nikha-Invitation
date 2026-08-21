@@ -1,0 +1,18 @@
+{
+  "groom": "Ashraf Ali",
+  "bride": "Zohra Firdous",
+  "date": "2026-12-12",
+  "time": "7:00 PM",
+  "timezone": "Asia/Kolkata",
+  "venue": "Venue Name",
+  "address": "Venue Address",
+  "googleMapsUrl": "",
+  "whatsappNumber": "",
+  "music": "assets/music/NikhaSong.mp3",
+  "theme": "emerald-gold",
+  "background": "assets/backgrounds/hero-background.webp",
+  "gallery": [
+    "assets/gallery/calligraphy.webp",
+    "assets/gallery/couple.webp"
+  ]
+}

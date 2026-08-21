@@ -1,0 +1,4 @@
+body[data-theme='emerald-gold'] { --ink: #10251d; --deep: #07130f; --paper: #f1eadb; --paper-muted: #d6ccb8; --gold: #c39a55; --gold-light: #e1c890; }
+body[data-theme='ivory-gold'] { --ink: #302c24; --deep: #17140f; --paper: #fff8e9; --paper-muted: #d9cdb7; --gold: #ad813d; --gold-light: #efd49b; }
+body[data-theme='burgundy-gold'] { --ink: #351a20; --deep: #1d0b10; --paper: #f8eadb; --paper-muted: #ddc5b6; --gold: #caa05b; --gold-light: #f0d59d; }
+body[data-theme='minimal'] { --ink: #202321; --deep: #111312; --paper: #f3f2ed; --paper-muted: #c3c6bd; --gold: #9da879; --gold-light: #d8dfbd; }

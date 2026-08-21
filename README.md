@@ -1,30 +1,39 @@
-# Nikah Invitation — Customization & Deploy
+# Nikah Invitation Platform
 
-Files:
+Reusable static digital-invitation template engine for Cloudflare Pages. The design and runtime live in `src/`; each customer is represented by `config/wedding.json` and files in `assets/`.
 
-- `index.html` — Single-file invitation. Edit the `WEDDING_CONFIG` object near the bottom to customize.
-- `images/` — The invitation currently uses `creative-arabic-calligraphy-ashraf-masculine-260nw-1846598230.jpg.webp` and `images.jpeg`.
-- `music/` — The invitation uses `NikhaSong.mp3` for background music.
+## Structure
 
-How to customize (quick):
+```text
+index.html                 Template shell
+config/wedding.json        Customer data contract
+src/css/                   Base, theme, component, and responsive styles
+src/js/                    Runtime, feature modules, and config loader
+src/components/            Reusable invitation sections
+assets/                    Customer-specific backgrounds, gallery, and music
+templates/                 Theme entry points for future designs
+public/                    Static public files
+```
 
-1. Open `index.html` and find the `WEDDING_CONFIG` object.
-   - `nikahDate`: set to `YYYY-MM-DDTHH:mm:ss+05:30` (example timezone +05:30).
-   - `venue` / `address`: replace placeholders.
-   - `googleMapsUrl`: paste your venue Google Maps link.
-   - `whatsappNumber`: set your number in international format (e.g. `919876543210`).
-   - `music`: keep `music/NikhaSong.mp3` or remove if unused.
+## Create a new invitation
 
-2. Replace images: update the image paths in the gallery section of `index.html`.
+1. Replace the values in `config/wedding.json`.
+2. Put the customer's files in `assets/backgrounds`, `assets/gallery`, and `assets/music`.
+3. Update only the asset paths in the JSON file.
+4. Choose a theme with `theme`: `emerald-gold`, `ivory-gold`, `burgundy-gold`, or `minimal`.
 
-3. Add music (optional): update the `music` path in `WEDDING_CONFIG`.
+Customer data is never embedded in the design components. The app fetches JSON at runtime, formats the configured date and timezone, builds the gallery, connects WhatsApp RSVP, and enables music after the visitor opens the invitation.
 
-Deploy to GitHub Pages:
+## Local check
 
-1. Commit the `nikah-invitation` folder to your repository root.
-2. In GitHub, go to repository **Settings → Pages** and set Source to the `main` branch and folder `/ (root)`.
-3. Visit `https://<username>.github.io/<repo>/nikah-invitation/` after a couple minutes.
+Run `npm run check` to validate the JavaScript modules. To preview the page locally, serve the repository over HTTP because ES modules and `fetch()` are blocked from `file://` pages:
 
-Notes:
-- All asset paths are relative so they work on GitHub Pages.
-- The invitation will not autoplay music until the visitor taps "Open Invitation".
+```bash
+python3 -m http.server 8080
+```
+
+Open `http://localhost:8080`.
+
+## Cloudflare Pages
+
+Create a Pages project connected to this repository. Use the repository root as the output directory and leave the build command empty for this static site. New customers only require changes to the JSON and asset files.

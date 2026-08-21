@@ -1,0 +1,3 @@
+export function renderEvents(config) {
+    return `<section class="events-section" data-reveal><div class="section-wrap"><p class="eyebrow">Save the date</p><h2>Nikah ceremony</h2><div class="gold-rule"></div><div class="event-grid"><article><span class="event-number">01</span><h3>Date</h3><p data-date>${config.date}</p></article><article><span class="event-number">02</span><h3>Time</h3><p>${config.time}</p><p class="muted">${config.timezone}</p></article><article><span class="event-number">03</span><h3>Venue</h3><p>${config.venue}</p><p class="muted">${config.address}</p>${config.googleMapsUrl ? `<a class="text-link" href="${config.googleMapsUrl}" target="_blank" rel="noreferrer">Open map ↗</a>` : ''}</article></div></div></section>`;
+}
