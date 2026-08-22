@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A beautiful Nikah invitation for Ayesha and Imran">
+<meta name="description" content="A beautiful Nikah invitation for Mohammed Umeruddin and Saba Fathima">
 <meta name="theme-color" content="#3B0716">
 
 <title>Mohammed Umeruddin &amp; Saba Fatima | Nikah Invitation</title>
@@ -525,8 +525,10 @@ p{
 .scratch-area{
   position:relative;
 
-  width:260px;
-  height:220px;
+  width:min(320px, 85vw);
+  aspect-ratio:1.15 / 1;
+
+  height:auto;
 
   margin:0 auto 25px;
 
@@ -534,6 +536,10 @@ p{
   -webkit-user-select:none;
 
   touch-action:none;
+
+  overflow:hidden;
+
+  border-radius:6px;
 }
 
 .date-under{
@@ -1681,7 +1687,7 @@ p{
         <div class="envelope-flap"></div>
 
         <div class="envelope-name">
-          Ayesha &amp; Imran
+          Mohammed Umeruddin &amp;&nbsp;&nbsp; Saba Fathima   
         </div>
 
         <div class="envelope-seal"></div>
@@ -1811,13 +1817,13 @@ p{
 
     <h1 class="hero-names">
 
-      Ayesha
+        Saba Fathima
 
       <span class="amp">
         &amp;
       </span>
 
-      Imran
+      Mohammed Umeruddin
 
     </h1>
 
@@ -1839,7 +1845,7 @@ p{
 
       <div>
         <span>Time</span>
-        &nbsp; 7:00 PM
+        &nbsp; 7:00 PM After Magrib
       </div>
 
       <div>
@@ -1888,7 +1894,7 @@ p{
     <p class="intro-text">
 
       Together with their families,
-      Ayesha and Imran joyfully invite you
+      Saba Fathima and Mohammed Umeruddin joyfully invite you
       to witness the blessed union of their Nikah.
 
     </p>
@@ -2018,7 +2024,15 @@ p{
       <p>
         [City, State]
       </p>
+    <a
+      class="button button-outline"
+      href="https://maps.app.goo.gl/pkDhQxeR1qY8Ww8Q6?g_st=ic"
+      target="_blank"
+      rel="noopener noreferrer">
 
+      View Location
+
+    </a>
     </div>
 
 
@@ -2051,7 +2065,15 @@ p{
       <p>
         [City, State]
       </p>
+      <a
+      class="button button-outline"
+      href="https://maps.app.goo.gl/pkDhQxeR1qY8Ww8Q6?g_st=ic"
+      target="_blank"
+      rel="noopener noreferrer">
 
+      View Location
+
+    </a>
     </div>
 
   </div>
@@ -2216,7 +2238,7 @@ p{
 <footer class="footer">
 
   <div class="footer-names">
-    Ayesha &amp; Imran
+    Saba Fathima &amp; Mohammed Umeruddin
   </div>
 
   <div class="footer-line"></div>
@@ -2226,7 +2248,7 @@ p{
   </div>
 
   <div class="copyright">
-    © 2026 Ayesha &amp; Imran · Nikah Invitation
+    © 2026 Saba Fathima &amp; Mohammed Umeruddin · Nikah Invitation
   </div>
 
 </footer>
@@ -2837,104 +2859,132 @@ document.addEventListener("DOMContentLoaded", function(){
      SCRATCH PROGRESS
   ========================================================= */
 
-  function checkScratchProgress(){
+function checkScratchProgress() {
 
-    if(
-      !scratchReady ||
-      scratchFinished ||
-      !ctx
-    ){
-
-      return;
-
-    }
-
-
-    const now =
-      Date.now();
-
-
-    if(
-      now - lastProgressCheck < 150
-    ){
-
-      return;
-
-    }
-
-
-    lastProgressCheck = now;
-
-
-    let imageData;
-
-
-    try{
-
-      imageData =
-        ctx.getImageData(
-          0,
-          0,
-          canvas.width,
-          canvas.height
-        );
-
-    }catch(error){
-
-      return;
-
-    }
-
-
-    const pixels =
-      imageData.data;
-
-
-    let transparent = 0;
-
-    let sampled = 0;
-
-
-    for(
-      let i = 3;
-      i < pixels.length;
-      i += 16
-    ){
-
-      sampled++;
-
-
-      if(
-        pixels[i] < 80
-      ){
-
-        transparent++;
-
-      }
-
-    }
-
-
-    if(sampled === 0){
-      return;
-    }
-
-
-    const percentage =
-      (transparent / sampled) * 100;
-
-
-    if(
-      percentage >= 35
-    ){
-
-      revealContinueButton();
-
-    }
-
+  if (
+    !scratchReady ||
+    scratchFinished ||
+    !ctx
+  ) {
+    return;
   }
 
+  const now = Date.now();
 
+  if (now - lastProgressCheck < 200) {
+    return;
+  }
+
+  lastProgressCheck = now;
+
+  const width = canvas.width;
+  const height = canvas.height;
+
+  let imageData;
+
+  try {
+
+    imageData = ctx.getImageData(
+      0,
+      0,
+      width,
+      height
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Unable to check scratch progress:",
+      error
+    );
+
+    return;
+  }
+
+  const pixels = imageData.data;
+
+  let transparentPixels = 0;
+  let totalPixels = 0;
+
+  /*
+     Check every 4th pixel instead of every pixel.
+     This keeps mobile performance smooth.
+  */
+
+  for (
+    let i = 3;
+    i < pixels.length;
+    i += 16
+  ) {
+
+    totalPixels++;
+
+    if (pixels[i] < 80) {
+      transparentPixels++;
+    }
+  }
+
+  if (totalPixels === 0) {
+    return;
+  }
+
+  const scratchedPercentage =
+    (transparentPixels / totalPixels) * 100;
+
+  console.log(
+    "Scratched:",
+    scratchedPercentage.toFixed(1) + "%"
+  );
+
+  /*
+     Require 85% of the card to be scratched.
+  */
+
+  if (scratchedPercentage >= 85) {
+
+    finishScratch();
+
+  }
+}
+
+
+function finishScratch() {
+
+  if (scratchFinished) {
+    return;
+  }
+
+  scratchFinished = true;
+
+  /*
+     Remove the remaining scratch coating.
+  */
+
+  ctx.globalCompositeOperation =
+    "destination-out";
+
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  /*
+     Disable further scratching.
+  */
+
+  canvas.style.pointerEvents = "none";
+
+  /*
+     Show continue button.
+  */
+
+  scratchComplete.classList.add(
+    "show"
+  );
+
+}
   /* =========================================================
      REVEAL CONTINUE
   ========================================================= */
