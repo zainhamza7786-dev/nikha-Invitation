@@ -1,0 +1,19 @@
+{
+  "groom": "Ashraf Ali",
+  "bride": "Zohra Firdous",
+  "date": "2026-09-12T19:00:00+05:30",
+  "time": "7:00 PM After Isha",
+  "timezone": "Asia/Kolkata",
+  "venue": "SFS Banquet Hall",
+  "address": "Karimnagar, Telangana, India",
+  "googleMapsUrl": "https://maps.app.goo.gl/pkDhQxeR1qY8Ww8Q6?g_st=ic",
+  "whatsappNumber": "+918919997879",
+  "music": "music/NikhaSong.mp3",
+  "design": "burgundy-floral",
+  "theme": "burgundy-floral",
+  "background": "images/nikhatemplate.jpeg",
+  "gallery": [
+    "images/nikhatemplate.jpeg",
+    "images/nikhatemplate.jpeg"
+  ]
+}

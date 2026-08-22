@@ -1,0 +1,23 @@
+{
+  "defaultDesign": "burgundy-floral",
+  "designs": {
+    "burgundy-floral": {
+      "name": "Burgundy Floral",
+      "background": "images/nikhatemplate.jpeg",
+      "accent": "#c6a15b",
+      "surface": "#071611",
+      "text": "#f7f0df",
+      "heroNamePosition": "center",
+      "description": "Classic floral elegance with warm gold accents."
+    },
+    "emerald-gold": {
+      "name": "Emerald Gold",
+      "background": "images/nikhatemplate.jpeg",
+      "accent": "#d4b77d",
+      "surface": "#0c211b",
+      "text": "#f7f0df",
+      "heroNamePosition": "center",
+      "description": "Fresh emerald tones with heritage-inspired details."
+    }
+  }
+}
