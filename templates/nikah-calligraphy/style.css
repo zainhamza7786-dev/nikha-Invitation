@@ -381,10 +381,7 @@ button {
    SCROLL TO DISCOVER
    ========================================================= */
 .scroll-indicator {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
+  position: relative;
 
   display: flex;
   flex-direction: column;
@@ -394,6 +391,8 @@ button {
   width: 120px;
   min-height: 60px;
   padding: 6px;
+
+  margin: clamp(14px, 2vh, 24px) auto clamp(8px, 1.5vh, 18px);
 
   border: 0;
   outline: none;
@@ -406,7 +405,6 @@ button {
   appearance: none;
   -webkit-appearance: none;
 }
-
 .scroll-indicator-text {
   display: block;
   margin-bottom: 5px;
@@ -957,85 +955,198 @@ button {
   }
 }
 
-
 /* =========================================================
    MOBILE — <= 520px
    ========================================================= */
 
 @media (max-width: 520px) {
+
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 100svh;
+    min-height: 100dvh;
+
+    /*
+     * Keep content inside the phone viewport while
+     * allowing enough breathing room around it.
+     */
+    padding:
+      max(72px, env(safe-area-inset-top) + 48px)
+      16px
+      max(76px, env(safe-area-inset-bottom) + 48px);
+
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: min(100%, 760px);
+    max-width: 100%;
+
+    margin: 0 auto;
+
+    text-align: center;
+  }
+
+  /* -------------------------------------------------------
+     COUPLE NAMES
+     ------------------------------------------------------- */
+
+  .couple-names {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    max-width: 100%;
+
+    margin:
+      clamp(14px, 2.5vh, 24px)
+      auto
+      clamp(14px, 2.5vh, 24px);
+
+    padding: 0 4px;
+
+    font-size: clamp(3.1rem, 14.5vw, 5.2rem);
+    line-height: .9;
+
+    text-align: center;
+
+    overflow: visible;
+  }
+
+  .couple-names > span:not(.ampersand) {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    overflow-wrap: normal;
+    word-break: normal;
+
+    text-align: center;
+  }
+
+  .ampersand {
+    flex: 0 0 auto;
+
+    margin:
+      clamp(4px, 1vh, 8px)
+      0;
+
+    font-size: .38em;
+    line-height: 1;
+  }
+
+  /* -------------------------------------------------------
+     JOURNEY TEXT
+     ------------------------------------------------------- */
+
+  .journey {
+    width: min(92vw, 500px);
+    max-width: 100%;
+
+    margin:
+      clamp(10px, 2vh, 18px)
+      auto
+      clamp(12px, 2vh, 20px);
+
+    padding: 0 8px;
+
+    color: var(--muted);
+
+    font-size: clamp(.56rem, 2.1vw, .7rem);
+    letter-spacing: clamp(.1em, 1.5vw, .16em);
+    line-height: 1.7;
+
+    text-align: center;
+  }
+
+  /* -------------------------------------------------------
+     SCROLL INDICATOR
+     ------------------------------------------------------- */
+
   .scroll-indicator {
-    bottom: 6px;
+    position: relative;
+
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 120px;
+    min-height: 64px;
+
+    margin:
+      clamp(10px, 2vh, 18px)
+      auto
+      0;
+
+    padding: 4px;
+
+    transform: none;
+
+    z-index: 3;
   }
 
   .scroll-indicator-text {
-    font-size: .5rem;
+    margin-bottom: 7px;
+
+    font-size: clamp(.46rem, 1.9vw, .52rem);
     letter-spacing: .14em;
+
+    white-space: nowrap;
   }
 
   .scroll-arrow {
     width: 22px;
     height: 30px;
   }
-}
 
-  /*
-   * Keep the names large while preventing
-   * horizontal overflow.
-   */
-  .couple-names {
-    width: 100%;
+  /* -------------------------------------------------------
+     DECORATIVE FRAME
+     ------------------------------------------------------- */
 
-    font-size: clamp(
-      3.6rem,
-      16vw,
-      5.2rem
-    );
+  .ornamental-frame {
+    inset:
+      max(48px, env(safe-area-inset-top) + 24px)
+      5vw
+      max(58px, env(safe-area-inset-bottom) + 24px);
 
-    line-height: .92;
+    z-index: 0;
 
-    margin-top: 18px;
-    margin-bottom: 18px;
+    pointer-events: none;
   }
 
-  .couple-names > span:not(.ampersand) {
-    max-width: 100%;
-  }
+  /* -------------------------------------------------------
+     POPUP
+     ------------------------------------------------------- */
 
-  .journey {
-    margin-top: 18px;
-    margin-bottom: 28px;
-
-    font-size: .64rem;
-    letter-spacing: .16em;
-  }
-
-  .scroll-cue {
-    padding: 11px 14px;
-
-    font-size: .62rem;
-    letter-spacing: .16em;
-  }
-
-  .countdown {
-    gap: 6px;
-  }
-
-  .countdown div {
-    padding: 18px 4px;
-  }
-
-  /*
-   * Popup becomes centered on smaller screens.
-   * This keeps it away from the fixed music button.
-   */
   .welcome-popup {
     left: 50%;
     right: auto;
 
-    bottom: 78px;
+    bottom: max(
+      74px,
+      calc(env(safe-area-inset-bottom) + 60px)
+    );
 
     width: calc(100vw - 24px);
-
     max-width: 360px;
 
     transform:
@@ -1057,20 +1168,32 @@ button {
   .welcome-popup strong {
     font-size: 1.6rem;
   }
+
+  /* -------------------------------------------------------
+     COUNTDOWN
+     ------------------------------------------------------- */
+
+  .countdown {
+    gap: 6px;
+  }
+
+  .countdown div {
+    padding: 18px 4px;
+  }
 }
 
 
 /* =========================================================
-   VERY SMALL PHONES — 320px / 360px
+   VERY SMALL PHONES — <= 380px
    ========================================================= */
 
 @media (max-width: 380px) {
 
   .hero {
     padding:
-      84px
-      14px
-      68px;
+      max(64px, env(safe-area-inset-top) + 42px)
+      12px
+      max(70px, env(safe-area-inset-bottom) + 42px);
   }
 
   .hero-inner {
@@ -1078,36 +1201,59 @@ button {
   }
 
   .couple-names {
-    font-size: clamp(
-      3.25rem,
-      15.5vw,
-      4.8rem
-    );
+    font-size: clamp(2.8rem, 14.5vw, 4.5rem);
 
-    gap: 6px;
+    line-height: .92;
 
-    line-height: .94;
+    margin-top: 12px;
+    margin-bottom: 14px;
   }
 
   .ampersand {
-    font-size: .36em;
+    font-size: .35em;
+    margin: 4px 0;
   }
 
   .hero .arabic {
     font-size: clamp(
-      1.45rem,
+      1.4rem,
       7vw,
       2rem
     );
+
+    line-height: 1.6;
   }
 
   .translation,
   .subtitle {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+  }
+
+  .journey {
+    width: 94vw;
+
+    font-size: .54rem;
+    letter-spacing: .1em;
+
+    line-height: 1.65;
+  }
+
+  .scroll-indicator {
+    width: 116px;
+
+    margin-top: 10px;
+  }
+
+  .scroll-indicator-text {
+    font-size: .45rem;
+    letter-spacing: .11em;
   }
 
   .welcome-popup {
-    bottom: 74px;
+    bottom: max(
+      70px,
+      calc(env(safe-area-inset-bottom) + 56px)
+    );
 
     width: calc(100vw - 20px);
 
@@ -1120,13 +1266,15 @@ button {
 
   .music-control {
     right: 14px;
-    bottom: 14px;
+    bottom: max(
+      14px,
+      env(safe-area-inset-bottom)
+    );
 
     width: 44px;
     height: 44px;
   }
 }
-
 
 /* =========================================================
    TABLETS
