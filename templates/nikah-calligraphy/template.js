@@ -643,10 +643,10 @@
       }
     });
 
-    const openInvitation = byId('openInvitation');
+    const envelope = byId('envelope');
 
-    if (openInvitation) {
-      openInvitation.addEventListener(
+    if (envelope) {
+      envelope.addEventListener(
         'click',
         () => {
           audio
@@ -780,23 +780,57 @@
      OPEN INVITATION / HERO ANIMATIONS
      ========================================================= */
 
-  function initializeAnimations() {
+  function initializeEnvelope() {
     const opening = byId('opening');
-    const openInvitation =
-      byId('openInvitation');
+    const envelope = byId('envelope');
+    const envelopeCue = byId('envelopeCue');
+    const openInvitation = byId('openInvitation');
+
+    if (!envelope || !opening) {
+      return;
+    }
+
+    let hasOpened = false;
+
+    function openEnvelope() {
+      if (hasOpened) return;
+      hasOpened = true;
+
+      envelope.classList.add('is-open');
+
+      if (envelopeCue) {
+        envelopeCue.classList.add('is-faded');
+      }
+
+      /*
+       * Reveal the "Open Invitation" button once the
+       * letter has finished sliding out of the envelope.
+       */
+      window.setTimeout(() => {
+        opening.classList.add('is-open-stage');
+      }, 950);
+    }
+
+    envelope.addEventListener('click', openEnvelope);
+    envelope.addEventListener('keyup', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        openEnvelope();
+      }
+    });
 
     if (openInvitation) {
-      openInvitation.addEventListener(
-        'click',
-        () => {
-          if (opening) {
-            opening.classList.add('is-hidden');
-          }
-
-          document.body.style.overflow = 'auto';
-        }
-      );
+      openInvitation.addEventListener('click', () => {
+        opening.classList.add('is-hidden');
+        document.body.style.overflow = 'auto';
+      });
     }
+  }
+
+  function initializeAnimations() {
+    /*
+     * Envelope-opening intro sequence.
+     */
+    initializeEnvelope();
 
     /*
      * Initialize popup exactly once.
