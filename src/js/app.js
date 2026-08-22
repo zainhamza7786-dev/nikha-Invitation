@@ -6,6 +6,10 @@
     }
   }
 
+  function capitalizeName(value) {
+    return String(value || '').trim().toLocaleLowerCase().replace(/(^|[\s-])([^\s-])/g, (match, separator, initial) => separator + initial.toLocaleUpperCase());
+  }
+
   function formatLocalDate(iso) {
     try {
       const value = new Date(iso);
@@ -68,16 +72,28 @@
 
   function applyDesign(config) {
     const design = config.designConfig || {};
+    const backgroundUrl = (config.background && config.background.image) || design.background || '';
+    const backgroundOverlay = design.heroOverlay || (config.background && config.background.overlay) || 'rgba(5, 15, 12, 0.45)';
+    const backgroundPosition = (config.background && config.background.position) || 'center center';
+    const backgroundSize = (config.background && config.background.size) || 'cover';
     const hero = document.querySelector('.hero');
     if (hero) {
-      const backgroundUrl = design.background || 'images/creative-arabic-calligraphy-ashraf-masculine-260nw-1846598230.jpg.webp';
-      hero.style.background = `linear-gradient(rgba(5, 15, 12, 0.45), rgba(5, 15, 12, 0.7)), url('${backgroundUrl}') center/cover no-repeat`;
+      if (!backgroundUrl) {
+        console.warn('Invitation background is not configured; keeping the neutral page background.');
+      }
+      hero.style.background = backgroundUrl
+        ? `linear-gradient(${backgroundOverlay}, ${backgroundOverlay}), url('${backgroundUrl}') ${backgroundPosition}/${backgroundSize} no-repeat`
+        : 'none';
     }
 
     document.body.dataset.design = config.design || 'burgundy-floral';
     document.documentElement.style.setProperty('--theme-accent', design.accent || '#c6a15b');
     document.documentElement.style.setProperty('--theme-surface', design.surface || '#071611');
     document.documentElement.style.setProperty('--theme-text', design.text || '#f7f0df');
+    document.documentElement.style.setProperty('--invitation-background-image', backgroundUrl ? `url("${backgroundUrl}")` : 'none');
+    document.documentElement.style.setProperty('--invitation-background-position', (config.background && config.background.position) || 'center center');
+    document.documentElement.style.setProperty('--invitation-background-size', (config.background && config.background.size) || 'cover');
+    document.documentElement.style.setProperty('--invitation-background-opacity', String(config.background && typeof config.background.opacity === 'number' ? config.background.opacity : 1));
   }
 
   function bindMusic(config) {
@@ -88,12 +104,13 @@
       return;
     }
 
-    if (config.music) {
-      audio.innerHTML = `<source src="${config.music}" type="audio/mpeg">`;
+    const musicSource = typeof config.music === 'object' ? config.music.src : config.music;
+    if (musicSource) {
+      audio.innerHTML = `<source src="${musicSource}" type="audio/mpeg">`;
       audio.load();
     }
 
-    if (musicButton && !config.music) {
+    if (musicButton && (!musicSource || (typeof config.music === 'object' && config.music.enabled === false))) {
       musicButton.style.display = 'none';
     }
   }
@@ -170,28 +187,51 @@
 
   async function init() {
     const config = await window.InvitationConfig.loadInvitationConfig();
+    const isRootPage = !window.location.pathname.includes('/templates/');
+    const templateEntry = config.templateConfig && config.templateConfig.entry;
+    if (isRootPage && config.template && config.template !== 'legacy-invitation' && templateEntry) {
+      window.location.replace(`${templateEntry}${window.location.search}`);
+      return;
+    }
+    const groom = capitalizeName(config.groom);
+    const bride = capitalizeName(config.bride);
+    const coupleName = groom && bride ? `${groom} & ${bride}` : groom || bride;
+    document.title = coupleName === '&' ? 'Nikah Invitation' : `${coupleName} | Nikah Invitation`;
+    const description = document.querySelector('meta[name="description"]');
+    const socialTitle = document.querySelector('meta[property="og:title"]');
+    if (description) description.content = coupleName === '&' ? 'A digital Nikah invitation' : `Nikah Invitation of ${coupleName}`;
+    if (socialTitle) socialTitle.content = document.title;
 
-    setText('openingTitle', `${config.groom} & ${config.bride}`);
-    setText('groomName', config.groom);
-    setText('brideName', config.bride);
-    setText('inviteGroom', config.groom);
-    setText('inviteBride', config.bride);
+    setText('openingTitle', coupleName);
+    setText('groomName', groom);
+    setText('brideName', bride);
+    setText('inviteGroom', groom);
+    setText('inviteBride', bride);
     setText('displayDate', formatLocalDate(config.date || config.nikahDate));
     setText('displayHijri', formatHijri(config.date || config.nikahDate));
     setText('displayTime', new Date(config.date || config.nikahDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    setText('displayVenue', config.venue);
-    setText('displayAddress', config.address);
+    setText('displayVenue', typeof config.venue === 'object' ? config.venue.name : config.venue);
+    setText('displayAddress', typeof config.venue === 'object' ? config.venue.address : config.address);
 
     const mapButton = document.getElementById('mapBtn');
     if (mapButton) {
-      mapButton.href = config.googleMapsUrl || '#';
+      if (config.googleMapsUrl) {
+        mapButton.href = config.googleMapsUrl;
+      } else {
+        mapButton.style.display = 'none';
+      }
       mapButton.setAttribute('aria-label', 'Open location in Google Maps');
     }
 
     const rsvpButton = document.getElementById('rsvpBtn');
     if (rsvpButton) {
-      const message = `Assalamu Alaikum,\n\nI would be honoured to attend the Nikah of ${config.groom} & ${config.bride}.\n\nInshaAllah, I will be there.`;
-      rsvpButton.href = makeWhatsappUrl(config.whatsappNumberClean || config.whatsappNumber, message);
+      const whatsappNumber = config.whatsappNumberClean || config.whatsappNumber;
+      if (!whatsappNumber || (config.rsvp && config.rsvp.enabled === false)) {
+        rsvpButton.style.display = 'none';
+      } else {
+        const message = `Assalamu Alaikum,\n\nI would be honoured to attend the Nikah of ${groom} & ${bride}.\n\nInshaAllah, I will be there.`;
+        rsvpButton.href = makeWhatsappUrl(whatsappNumber, message);
+      }
       rsvpButton.setAttribute('aria-label', 'RSVP on WhatsApp');
     }
 
@@ -213,6 +253,41 @@
     if (musicButton) {
       musicButton.onclick = toggleMusic;
     }
+
+    const scrollCue = document.getElementById('scrollCue');
+    const invitationSection = document.querySelector('.invitation');
+    const welcomePopup = document.getElementById('welcomePopup');
+    const welcomePopupClose = document.getElementById('welcomePopupClose');
+    let welcomePopupTimer;
+    const closeWelcomePopup = () => {
+      if (!welcomePopup) return;
+      welcomePopup.classList.remove('visible');
+      welcomePopup.setAttribute('aria-hidden', 'true');
+      window.clearTimeout(welcomePopupTimer);
+    };
+    const showWelcomePopup = () => {
+      if (!welcomePopup) return;
+      welcomePopup.classList.add('visible');
+      welcomePopup.setAttribute('aria-hidden', 'false');
+      window.clearTimeout(welcomePopupTimer);
+      welcomePopupTimer = window.setTimeout(closeWelcomePopup, 3500);
+    };
+    if (welcomePopupClose) {
+      welcomePopupClose.onclick = closeWelcomePopup;
+    }
+    if (scrollCue && invitationSection) {
+      scrollCue.onclick = () => {
+        invitationSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showWelcomePopup();
+      };
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach((element) => observer.observe(element));
 
     document.body.style.overflow = 'hidden';
   }

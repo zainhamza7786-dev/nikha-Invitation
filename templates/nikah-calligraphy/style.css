@@ -1,0 +1,1184 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --ivory: #f6f0e5;
+  --champagne: #644611;
+  --ink: #3d1606;
+  --muted: #776d65;
+  --paper: rgba(249, 244, 235, .92);
+  --frame: rgba(215, 189, 139, .68);
+
+  --background-image: none;
+  --background-overlay: rgba(36, 27, 22, .18);
+  --background-position: center center;
+  --background-size: cover;
+  --background-opacity: 1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #e9dfd0;
+  color: var(--ink);
+  font-family: Montserrat, sans-serif;
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.invitation-background,
+.invitation-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.invitation-background {
+  z-index: 0;
+
+  background-color: #e9dfd0;
+  background-image: var(--background-image);
+  background-position: var(--background-position);
+  background-size: var(--background-size);
+  background-repeat: no-repeat;
+
+  opacity: var(--background-opacity);
+}
+
+.invitation-overlay {
+  z-index: 1;
+  background: var(--background-overlay);
+}
+
+.invitation-content,
+.invitation-controls {
+  position: relative;
+  z-index: 2;
+}
+
+.invitation-controls {
+  z-index: 10;
+}
+
+
+/* =========================================================
+   OPENING SCREEN
+   ========================================================= */
+
+.opening {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+
+  display: grid;
+  place-items: center;
+
+  min-height: 100svh;
+  padding: 24px;
+
+  text-align: center;
+
+  background: rgba(246, 240, 229, .96);
+
+  transition:
+    opacity .8s ease,
+    visibility .8s ease;
+}
+
+.opening.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.opening-inner {
+  width: min(92vw, 620px);
+  animation: rise .9s ease both;
+}
+
+
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
+
+.eyebrow {
+  margin: 0 0 18px;
+
+  color: var(--champagne);
+
+  font-size: .7rem;
+  letter-spacing: .28em;
+  line-height: 1.6;
+
+  text-transform: uppercase;
+}
+
+.arabic {
+  margin: 0;
+
+  color: var(--champagne);
+
+  font-family: Amiri, serif;
+  font-size: clamp(1.7rem, 5vw, 2.8rem);
+  line-height: 1.8;
+}
+
+.translation,
+.subtitle {
+  color: var(--muted);
+
+  font-family: Cormorant Garamond, serif;
+  font-size: 1.35rem;
+  letter-spacing: .12em;
+}
+
+
+/* =========================================================
+   OPENING COUPLE NAME
+   ========================================================= */
+
+.opening-couple {
+  margin: 28px 0 6px;
+
+  color: var(--ink);
+
+  font-family: Great Vibes, cursive;
+
+  /*
+   * Responsive but still visually prominent.
+   */
+  font-size: clamp(3.4rem, 13vw, 7rem);
+
+  font-weight: 400;
+  line-height: .95;
+
+  /*
+   * IMPORTANT:
+   * Name capitalization is now handled by JavaScript.
+   * Do not transform the data using CSS.
+   */
+  text-transform: none;
+
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.opening-couple::first-letter {
+  font-size: 1.12em;
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.button {
+  display: inline-block;
+
+  border: 1px solid var(--champagne);
+  padding: 14px 26px;
+
+  color: var(--ink);
+  background: transparent;
+
+  text-decoration: none;
+
+  letter-spacing: .16em;
+  text-transform: uppercase;
+
+  font-size: .68rem;
+
+  transition:
+    background-color .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--champagne);
+  outline: none;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  min-height: 100svh;
+
+  /*
+   * Slightly more breathing room so the names and
+   * scroll control don't collide on smaller screens.
+   */
+  padding: 96px 24px 80px;
+
+  text-align: center;
+}
+
+.hero-inner {
+  width: min(92vw, 760px);
+
+  /*
+   * Keeps the hero content above decorative elements.
+   */
+  position: relative;
+  z-index: 1;
+}
+
+.ornamental-frame {
+  position: absolute;
+
+  inset: 7vh max(7vw, 22px);
+
+  border: 1px solid var(--frame);
+  border-radius: 50%;
+
+  transform: rotate(-3deg);
+
+  pointer-events: none;
+}
+
+.ornamental-frame::after {
+  content: '';
+
+  position: absolute;
+  inset: 1.5%;
+
+  border: 1px solid rgba(215, 189, 139, .32);
+  border-radius: 50%;
+
+  transform: rotate(6deg);
+}
+
+
+/* =========================================================
+   HERO COUPLE NAMES
+   ========================================================= */
+
+.couple-names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /*
+   * Prevent the name block from becoming wider than
+   * the available hero space.
+   */
+  width: 100%;
+  max-width: 100%;
+
+  margin: 22px auto;
+
+  color: var(--ink);
+
+  /*
+   * Existing wedding/calligraphy font preserved.
+   */
+  font-family: Great Vibes, cursive;
+
+  /*
+   * Large primary visual focus.
+   */
+  font-size: clamp(4rem, 13vw, 9rem);
+
+  font-weight: 400;
+
+  /*
+   * Slightly more comfortable than .86 for
+   * title-cased names on mobile.
+   */
+  line-height: .9;
+
+  /*
+   * JavaScript handles capitalization.
+   */
+  text-transform: none;
+
+  /*
+   * Prevent horizontal overflow.
+   */
+  overflow: visible;
+  overflow-wrap: break-word;
+  word-break: normal;
+
+  /*
+   * Helps long names remain visually centered.
+   */
+  text-align: center;
+}
+
+.couple-names > span:not(.ampersand) {
+  display: block;
+
+  max-width: 100%;
+
+  /*
+   * Long names can wrap naturally instead of
+   * creating horizontal scrolling.
+   */
+  overflow-wrap: break-word;
+  word-break: normal;
+
+  text-align: center;
+}
+
+.couple-names > span:not(.ampersand)::first-letter {
+  font-size: 1.12em;
+}
+
+.ampersand {
+  color: var(--champagne);
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: .4em;
+  font-style: italic;
+  line-height: 1;
+}
+
+
+/* =========================================================
+   HERO SUB-CONTENT
+   ========================================================= */
+
+.journey {
+  margin: 22px auto 34px;
+
+  color: var(--muted);
+
+  font-size: .7rem;
+  letter-spacing: .2em;
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   SCROLL TO DISCOVER
+   ========================================================= */
+.scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 120px;
+  min-height: 60px;
+  padding: 6px;
+
+  border: 0;
+  outline: none;
+  background: transparent;
+
+  color: #6D1F3A;
+  cursor: pointer;
+  z-index: 10;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.scroll-indicator-text {
+  display: block;
+  margin-bottom: 5px;
+
+  font-family: Montserrat, sans-serif;
+  font-size: .52rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  opacity: .65;
+  animation: scrollTextFade 2.4s ease-in-out infinite;
+}
+
+.scroll-arrow {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 24px;
+  height: 30px;
+
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+
+.scroll-arrow span {
+  position: absolute;
+
+  width: 11px;
+  height: 11px;
+
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+
+  transform: rotate(45deg);
+}
+
+.scroll-arrow span:first-child {
+  top: 0;
+  opacity: .9;
+}
+
+.scroll-arrow span:last-child {
+  top: 9px;
+  opacity: .35;
+}
+
+.scroll-indicator:hover,
+.scroll-indicator:focus-visible {
+  color: #6D1F3A;
+}
+
+.scroll-indicator:focus-visible {
+  border-radius: 8px;
+  box-shadow: 0 0 0 2px rgba(109, 31, 58, .2);
+}
+
+@keyframes scrollBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: .6;
+  }
+
+  50% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+}
+
+@keyframes scrollTextFade {
+  0%,
+  100% {
+    opacity: .4;
+  }
+
+  50% {
+    opacity: .85;
+  }
+}
+/* =========================================================
+   WELCOME POPUP
+   ========================================================= */
+
+.welcome-popup {
+  position: fixed;
+
+  /*
+   * Existing right-side positioning preserved.
+   */
+  right: 20px;
+  bottom: 82px;
+
+  z-index: 15;
+
+  width: min(320px, calc(100vw - 40px));
+
+  padding: 24px 46px 24px 24px;
+
+  border: 1px solid var(--frame);
+
+  background: rgba(246, 240, 229, .96);
+
+  color: var(--ink);
+
+  text-align: center;
+
+  box-shadow: 0 14px 35px rgba(25, 12, 8, .2);
+
+  /*
+   * Hidden initial state.
+   */
+  opacity: 0;
+  visibility: hidden;
+
+  /*
+   * Elegant entrance animation.
+   */
+  transform: translateY(12px) scale(.96);
+
+  transition:
+    opacity .35s ease,
+    visibility .35s ease,
+    transform .35s ease;
+
+  /*
+   * Hidden popup must not prevent scrolling or
+   * clicking the invitation.
+   */
+  pointer-events: none;
+}
+
+
+/*
+ * template.js supports both .visible and .is-visible.
+ * Keep both selectors so there is no CSS/JS mismatch.
+ */
+.welcome-popup.visible,
+.welcome-popup.is-visible {
+  opacity: 1;
+  visibility: visible;
+
+  transform: translateY(0) scale(1);
+
+  /*
+   * Popup itself can receive clicks, especially
+   * the close button.
+   */
+  pointer-events: auto;
+}
+
+.welcome-popup-mark {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--champagne);
+
+  font-size: 1.2rem;
+}
+
+.welcome-popup strong {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.welcome-popup p {
+  margin: 0;
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+
+/* =========================================================
+   POPUP CLOSE BUTTON
+   ========================================================= */
+
+.welcome-popup-close {
+  position: absolute;
+
+  top: 8px;
+  right: 10px;
+
+  width: 34px;
+  height: 34px;
+
+  border: 0;
+
+  padding: 6px;
+
+  background: transparent;
+
+  color: var(--ink);
+
+  font-size: 1.2rem;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  border-radius: 50%;
+
+  transition:
+    background-color .2s ease,
+    color .2s ease;
+}
+
+.welcome-popup-close:hover {
+  background: rgba(215, 189, 139, .2);
+}
+
+.welcome-popup-close:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.section {
+  width: min(92vw, 860px);
+
+  margin: 0 auto;
+
+  padding: 110px 24px;
+
+  text-align: center;
+}
+
+.section h2 {
+  margin: 0 0 28px;
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: clamp(2.3rem, 7vw, 4.4rem);
+
+  font-weight: 500;
+}
+
+.invitation-section,
+.events-section,
+.rsvp-section {
+  background: var(--paper);
+}
+
+.body-copy {
+  max-width: 620px;
+
+  margin: 0 auto;
+
+  color: var(--muted);
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+
+  line-height: 1.7;
+}
+
+.small-arabic {
+  margin: 18px 0 28px;
+}
+
+
+/* =========================================================
+   COUNTDOWN
+   ========================================================= */
+
+.countdown-section {
+  max-width: none;
+
+  background: rgba(238, 228, 213, .88);
+}
+
+.countdown {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  max-width: 680px;
+
+  margin: 42px auto 0;
+}
+
+.countdown div {
+  padding: 24px 8px;
+
+  border-top: 1px solid var(--frame);
+  border-bottom: 1px solid var(--frame);
+}
+
+.countdown strong {
+  display: block;
+
+  color: var(--ink);
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: clamp(2.3rem, 6vw, 4rem);
+
+  font-weight: 500;
+}
+
+.countdown span {
+  color: var(--muted);
+
+  font-size: .62rem;
+  letter-spacing: .12em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
+.events-section {
+  max-width: none;
+}
+
+.events-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 16px;
+
+  text-align: left;
+}
+
+.event-card {
+  min-width: 0;
+
+  padding: 28px;
+
+  border: 1px solid rgba(119, 109, 101, .22);
+}
+
+.event-card h3 {
+  margin: 0 0 12px;
+
+  font-family: Cormorant Garamond, serif;
+
+  font-size: 1.8rem;
+
+  font-weight: 500;
+}
+
+.event-card p {
+  margin: 7px 0;
+
+  color: var(--muted);
+
+  line-height: 1.6;
+}
+
+.event-card .button {
+  margin-top: 14px;
+
+  font-size: .6rem;
+}
+
+
+/* =========================================================
+   GALLERY
+   ========================================================= */
+
+.gallery-section {
+  max-width: none;
+
+  background: rgba(246, 240, 229, .86);
+}
+
+.gallery {
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(180px, 1fr));
+
+  gap: 12px;
+}
+
+.gallery figure {
+  aspect-ratio: 1;
+
+  margin: 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--frame);
+
+  background: #e9dfd0;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform .6s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.04);
+}
+
+
+/* =========================================================
+   DUA
+   ========================================================= */
+
+.dua-section {
+  background: rgba(238, 228, 213, .88);
+}
+
+
+/* =========================================================
+   RSVP
+   ========================================================= */
+
+.rsvp-section {
+  max-width: none;
+}
+
+.rsvp-section .button {
+  margin-top: 28px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  padding: 68px 24px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  font-size: .68rem;
+  letter-spacing: .12em;
+
+  text-transform: uppercase;
+}
+
+.footer-couple {
+  margin: 0 0 16px;
+
+  color: var(--ink);
+
+  font-family: Great Vibes, cursive;
+
+  font-size: 3rem;
+
+  letter-spacing: 0;
+
+  /*
+   * JavaScript controls actual capitalization.
+   */
+  text-transform: none;
+}
+
+.footer-couple::first-letter {
+  font-size: 1.12em;
+}
+
+
+/* =========================================================
+   MUSIC CONTROL
+   ========================================================= */
+
+.music-control {
+  position: fixed;
+
+  right: 20px;
+  bottom: 20px;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid var(--champagne);
+
+  border-radius: 50%;
+
+  color: var(--ink);
+
+  background: rgba(246, 240, 229, .86);
+
+  z-index: 20;
+}
+
+
+/* =========================================================
+   HIDDEN
+   ========================================================= */
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cuePulse {
+  0%,
+  100% {
+    opacity: .72;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   MOBILE — <= 520px
+   ========================================================= */
+
+@media (max-width: 520px) {
+  .scroll-indicator {
+    bottom: 6px;
+  }
+
+  .scroll-indicator-text {
+    font-size: .5rem;
+    letter-spacing: .14em;
+  }
+
+  .scroll-arrow {
+    width: 22px;
+    height: 30px;
+  }
+}
+
+  /*
+   * Keep the names large while preventing
+   * horizontal overflow.
+   */
+  .couple-names {
+    width: 100%;
+
+    font-size: clamp(
+      3.6rem,
+      16vw,
+      5.2rem
+    );
+
+    line-height: .92;
+
+    margin-top: 18px;
+    margin-bottom: 18px;
+  }
+
+  .couple-names > span:not(.ampersand) {
+    max-width: 100%;
+  }
+
+  .journey {
+    margin-top: 18px;
+    margin-bottom: 28px;
+
+    font-size: .64rem;
+    letter-spacing: .16em;
+  }
+
+  .scroll-cue {
+    padding: 11px 14px;
+
+    font-size: .62rem;
+    letter-spacing: .16em;
+  }
+
+  .countdown {
+    gap: 6px;
+  }
+
+  .countdown div {
+    padding: 18px 4px;
+  }
+
+  /*
+   * Popup becomes centered on smaller screens.
+   * This keeps it away from the fixed music button.
+   */
+  .welcome-popup {
+    left: 50%;
+    right: auto;
+
+    bottom: 78px;
+
+    width: calc(100vw - 24px);
+
+    max-width: 360px;
+
+    transform:
+      translate(-50%, 12px)
+      scale(.96);
+  }
+
+  .welcome-popup.visible,
+  .welcome-popup.is-visible {
+    transform:
+      translate(-50%, 0)
+      scale(1);
+  }
+
+  .welcome-popup p {
+    font-size: 1rem;
+  }
+
+  .welcome-popup strong {
+    font-size: 1.6rem;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES — 320px / 360px
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .hero {
+    padding:
+      84px
+      14px
+      68px;
+  }
+
+  .hero-inner {
+    width: 100%;
+  }
+
+  .couple-names {
+    font-size: clamp(
+      3.25rem,
+      15.5vw,
+      4.8rem
+    );
+
+    gap: 6px;
+
+    line-height: .94;
+  }
+
+  .ampersand {
+    font-size: .36em;
+  }
+
+  .hero .arabic {
+    font-size: clamp(
+      1.45rem,
+      7vw,
+      2rem
+    );
+  }
+
+  .translation,
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .welcome-popup {
+    bottom: 74px;
+
+    width: calc(100vw - 20px);
+
+    padding:
+      21px
+      42px
+      20px
+      20px;
+  }
+
+  .music-control {
+    right: 14px;
+    bottom: 14px;
+
+    width: 44px;
+    height: 44px;
+  }
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (min-width: 521px) and (max-width: 1024px) {
+
+  .couple-names {
+    font-size: clamp(
+      5rem,
+      11vw,
+      7.5rem
+    );
+  }
+
+  .welcome-popup {
+    right: 24px;
+    bottom: 82px;
+  }
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+  .couple-names {
+    font-size: clamp(
+      6rem,
+      9vw,
+      9rem
+    );
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Nikah invitation">
+  <title>Nikah Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="invitation-background" aria-hidden="true"></div>
+  <div class="invitation-overlay" aria-hidden="true"></div>
+
+  <div class="opening" id="opening">
+    <div class="opening-inner">
+      <p class="arabic" id="openingArabic"></p>
+      <p class="eyebrow" id="openingTranslation"></p>
+      <p class="opening-couple" id="openingCouple"></p>
+      <p class="subtitle" id="openingSubtitle"></p>
+      <button class="button" id="openInvitation" type="button">Open Invitation</button>
+    </div>
+  </div>
+
+  <aside class="welcome-popup" id="welcomePopup" role="status" aria-live="polite" aria-hidden="true">
+    <button class="welcome-popup-close" id="welcomePopupClose" type="button" aria-label="Close">&times;</button>
+    <span class="welcome-popup-mark">✦</span>
+    <strong>Welcome!</strong>
+    <p>Explore our wedding details<br>by scrolling or swiping.</p>
+  </aside>
+
+  <main class="invitation-content" id="invitationContent">
+    <section class="hero" aria-labelledby="coupleNames">
+      <div class="ornamental-frame" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="eyebrow" id="heroEyebrow"></p>
+        <p class="arabic" id="heroArabic"></p>
+        <p class="translation" id="heroTranslation"></p>
+        <h1 class="couple-names" id="coupleNames"><span id="groomName"></span><span class="ampersand">&amp;</span><span id="brideName"></span></h1>
+        <p class="subtitle" id="heroSubtitle"></p>
+        <p class="journey" id="heroJourney"></p>
+       <button class="scroll-indicator" id="scrollCue" type="button" aria-label="Scroll to explore">
+  <span class="scroll-indicator-text">Scroll to Explore</span>
+  <span class="scroll-arrow" aria-hidden="true">
+    <span></span>
+    <span></span>
+  </span>
+</button>
+      </div>
+    </section>
+
+    <section class="section invitation-section" id="invitationSection">
+      <p class="eyebrow">A joyful beginning</p>
+      <h2>With their families</h2>
+      <p class="arabic small-arabic" id="bismillah"></p>
+      <p class="body-copy" id="invitationText"></p>
+    </section>
+
+    <section class="section countdown-section" id="countdownSection">
+      <p class="eyebrow">Counting the moments</p>
+      <h2>Until our Nikah</h2>
+      <div class="countdown" id="countdown" aria-live="polite">
+        <div><strong id="days">00</strong><span>Days</span></div>
+        <div><strong id="hours">00</strong><span>Hours</span></div>
+        <div><strong id="minutes">00</strong><span>Minutes</span></div>
+        <div><strong id="seconds">00</strong><span>Seconds</span></div>
+      </div>
+    </section>
+
+    <section class="section events-section" id="eventsSection">
+      <p class="eyebrow">Save the dates</p>
+      <h2>Celebrations</h2>
+      <div class="events-grid" id="eventsGrid"></div>
+    </section>
+
+    <section class="section gallery-section" id="gallerySection">
+      <p class="eyebrow">A few memories</p>
+      <h2>Moments to cherish</h2>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <section class="section dua-section" id="duaSection">
+      <p class="eyebrow">A beautiful dua</p>
+      <h2 id="duaTitle"></h2>
+      <p class="arabic small-arabic" id="duaArabic"></p>
+      <p class="body-copy" id="duaTranslation"></p>
+    </section>
+
+    <section class="section rsvp-section" id="rsvpSection">
+      <p class="eyebrow">We would be honoured</p>
+      <h2>Join us</h2>
+      <p class="body-copy" id="rsvpText"></p>
+      <a class="button" id="rsvpButton" href="" target="_blank" rel="noopener">RSVP on WhatsApp</a>
+    </section>
+
+    <footer class="footer">
+      <p class="footer-couple" id="footerCouple"></p>
+      <p>With love, duas &amp; blessings</p>
+    </footer>
+  </main>
+
+  <div class="invitation-controls">
+    <button class="music-control" id="musicButton" type="button" aria-label="Play invitation music">♪</button>
+    <audio id="weddingMusic" loop preload="none"></audio>
+  </div>
+
+  <script src="../../src/js/config.js"></script>
+  <script src="../../engine/countdown.js"></script>
+  <script src="../../engine/whatsapp.js"></script>
+  <script src="../../engine/gallery.js"></script>
+  <script src="../../engine/maps.js"></script>
+  <script src="template.js"></script>
+  <noscript><style>.opening { display: none; } body { overflow: auto; }</style></noscript>
+</body>
+</html>

@@ -18,6 +18,16 @@
       "text": "#f7f0df",
       "heroNamePosition": "center",
       "description": "Fresh emerald tones with heritage-inspired details."
+    },
+    "brown-black-luxurious": {
+      "name": "Brown Black Luxurious",
+      "background": "",
+      "accent": "#c8a875",
+      "surface": "#17110e",
+      "text": "#f4eadc",
+      "heroOverlay": "rgba(23, 17, 14, 0.48)",
+      "heroNamePosition": "center",
+      "description": "Editorial brown, black, and champagne styling inspired by the supplied reference."
     }
   }
 }
